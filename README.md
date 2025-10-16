@@ -10,13 +10,12 @@ Berikut adalah beberapa tangkapan layar yang menunjukkan fitur-fitur utama dari 
 
 **1. Tampilan Utama dengan Daftar Tugas**
 <img width="600" height="512" alt="image" src="https://github.com/user-attachments/assets/fdced66a-7949-498d-9b9d-1c932f3d49f4" />
+<br>
 
-
-**2. Mode Edit Tugas**
+**2. Mode Edit Tugas**<br>
 <img width="881" height="547" alt="image" src="https://github.com/user-attachments/assets/407ecbf7-2715-416d-a5d5-c2ee65f32880" />
 
-
-**3. Fitur Filter dan Pencarian Aktif**
+**3. Fitur Filter dan Pencarian Aktif**<br>
 <img width="532" height="430" alt="image" src="https://github.com/user-attachments/assets/dba85e12-9b52-4cab-8252-577cbb6b396b" />
 
 
