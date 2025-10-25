@@ -1,7 +1,3 @@
-Tentu, ini adalah versi `README.md` yang sudah diperbaiki formatnya dan sedikit disempurnakan agar lebih rapi dan jelas.
-
------
-
 # 🚀 Personal Dashboard (ES6+ Version)
 
 Aplikasi web *single-page* yang berfungsi sebagai *personal dashboard* sederhana. Aplikasi ini menampilkan *widget* waktu WIB yang disinkronkan dengan API eksternal dan menyediakan fitur manajemen "Catatan Cepat" yang interaktif (Tambah, Edit, Hapus).
