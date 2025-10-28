@@ -1,0 +1,39 @@
+/* src/components/BookFilter/BookFilter.css */
+
+.book-filter-container {
+  display: flex;
+  flex-wrap: wrap; /* Agar responsif di layar kecil */
+  gap: 1.5rem;
+  padding: 1rem;
+  background-color: #ecf0f1;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Agar kedua grup berbagi ruang */
+}
+
+.search-group {
+  flex-basis: 300px; /* Lebar minimum untuk search bar */
+}
+
+.status-group {
+  flex-basis: 150px; /* Lebar minimum untuk filter */
+}
+
+.filter-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.search-input,
+.status-select {
+  padding: 0.75rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 1rem;
+}

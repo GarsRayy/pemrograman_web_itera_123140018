@@ -1,0 +1,16 @@
+/* src/components/BookList/BookList.css */
+
+.book-list-container {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden; /* Agar border-radius di .book-item terlihat */
+}
+
+.book-list-empty {
+  background-color: #ffffff;
+  padding: 3rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  color: #7f8c8d;
+}

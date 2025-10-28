@@ -1,0 +1,84 @@
+/* src/components/BookItem/BookItem.css */
+
+.book-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.25rem;
+  background-color: #ffffff;
+  /* Ganti border-bottom dengan border tipis di semua sisi */
+  border: 1px solid #eef1f3;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.book-item:hover {
+  /* Efek 'hover' modern */
+  border-color: #e0e0e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  z-index: 2; /* Bawa ke depan */
+}
+
+.book-item:last-child {
+  border-bottom: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.book-item:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+
+.book-info {
+  flex-grow: 1;
+}
+
+.book-title {
+  margin: 0 0 0.25rem 0;
+  color: #2c3e50;
+}
+
+.book-author {
+  margin: 0;
+  color: #7f8c8d;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.book-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.book-actions .status-select {
+  padding: 0.5rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* Warna berdasarkan status */
+.status-owned { color: #27ae60; border-color: #27ae60; }
+.status-reading { color: #2980b9; border-color: #2980b9; }
+.status-tobuy { color: #8e44ad; border-color: #8e44ad; }
+
+
+.delete-btn {
+  padding: 0.5rem 0.75rem;
+  background-color: #fdfdfd; /* Latar netral */
+  color: #e74c3c; /* Teks warna merah */
+  border: 1px solid #f0d6d3; /* Border merah tipis */
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: #e74c3c; /* Latar jadi merah */
+  color: #ffffff; /* Teks jadi putih */
+  border-color: #e74c3c;
+}
