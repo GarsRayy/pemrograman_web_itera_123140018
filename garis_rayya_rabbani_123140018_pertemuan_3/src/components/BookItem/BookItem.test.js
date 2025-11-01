@@ -3,50 +3,67 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useBooks } from '../../context/BookContext';
+import { BookProvider } from '../../context/BookContext'; // Import Provider
 import BookItem from './BookItem';
 
-// (1) Mock hook 'useBooks'
-jest.mock('../../context/BookContext');
-
-// (2) Siapkan fungsi mock
+// (1) Siapkan fungsi mock
 const mockDeleteBook = jest.fn();
 const mockUpdateBook = jest.fn();
 
-// (3) Data buku palsu untuk di-render
+// (2) Data buku palsu untuk di-render (gunakan 'owned', bukan 'milik')
 const mockBook = {
   id: 123,
   title: 'Judul Buku Keren',
   author: 'Penulis Hebat',
-  status: 'milik'
+  status: 'owned' // <-- Gunakan status baru 'owned'
 };
 
+// (3) Buat wrapper kustom
+const AllTheProviders = ({ children }) => {
+  return (
+    <BookProvider>
+      {children}
+    </BookProvider>
+  );
+};
+
+const customRender = (ui, options) =>
+  render(ui, { wrapper: AllTheProviders, ...options });
+
+// (4) Mock implementasi useBooks
+jest.mock('../../context/BookContext', () => ({
+  ...jest.requireActual('../../context/BookContext'),
+  useBooks: () => ({
+    deleteBook: mockDeleteBook,
+    updateBook: mockUpdateBook,
+  }),
+}));
 
 
 describe('BookItem Component', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    // (4) Atur nilai balikan hook
-    useBooks.mockReturnValue({
-      deleteBook: mockDeleteBook,
-      updateBook: mockUpdateBook,
-    });
     // (5) Mock 'window.confirm' agar otomatis 'OK'
     window.confirm = jest.fn(() => true);
   });
 
-  test('4. renders book title and author correctly', () => {
-    render(<BookItem book={mockBook} />);
+  test('1. renders book title, author, and status correctly', () => {
+    customRender(<BookItem book={mockBook} />);
 
-    // Cek apakah judul dan penulis tampil
+    // Cek apakah judul tampil
     expect(screen.getByText('Judul Buku Keren')).toBeInTheDocument();
-    expect(screen.getByText('oleh Penulis Hebat')).toBeInTheDocument();
+    
+    // Cek apakah penulis tampil (TANPA "oleh")
+    expect(screen.getByText('Penulis Hebat')).toBeInTheDocument();
+    
+    // Cek apakah status 'owned' di-render sebagai 'Milik Saya'
+    expect(screen.getByText('Milik Saya')).toBeInTheDocument();
   });
 
-  test('5. calls deleteBook when delete button is clicked', async () => {
+  test('2. calls deleteBook when delete button is clicked', async () => {
     const user = userEvent.setup();
-    render(<BookItem book={mockBook} />);
+    customRender(<BookItem book={mockBook} />);
 
     // Klik tombol hapus
     const deleteButton = screen.getByRole('button', { name: /hapus/i });
@@ -60,19 +77,23 @@ describe('BookItem Component', () => {
     expect(mockDeleteBook).toHaveBeenCalledWith(123); // ID dari mockBook
   });
   
-  test('6. calls updateBook when status is changed', async () => {
+  test('3. shows BookForm when edit button is clicked', async () => {
     const user = userEvent.setup();
-    render(<BookItem book={mockBook} />);
+    customRender(<BookItem book={mockBook} />);
 
-    // Ubah status select-box
-    const statusSelect = screen.getByRole('combobox');
-    await user.selectOptions(statusSelect, 'beli'); // Ubah ke 'Ingin Dibeli'
+    // Pastikan tombol "Simpan" (dari form) tidak ada di awal
+    expect(screen.queryByRole('button', { name: /simpan perubahan/i })).not.toBeInTheDocument();
 
-    // Cek apakah 'updateBook' dipanggil dengan ID dan data update yang benar
-    expect(mockUpdateBook).toHaveBeenCalledTimes(1);
-    expect(mockUpdateBook).toHaveBeenCalledWith(
-      123,          // ID dari mockBook
-      { status: 'beli' } // Data update
-    );
+    // Klik tombol Edit
+    const editButton = screen.getByRole('button', { name: /edit/i });
+    await user.click(editButton);
+
+    // Sekarang, pastikan form-nya muncul!
+    // Kita cek dengan mencari tombol "Simpan Perubahan"
+    expect(screen.getByRole('button', { name: /simpan perubahan/i })).toBeInTheDocument();
+    
+    // Kita juga bisa cek apakah inputnya terisi dengan data yang benar
+    expect(screen.getByLabelText(/judul buku/i)).toHaveValue('Judul Buku Keren');
+    expect(screen.getByLabelText(/penulis/i)).toHaveValue('Penulis Hebat');
   });
 });
