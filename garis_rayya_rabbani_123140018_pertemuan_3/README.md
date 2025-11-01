@@ -19,17 +19,13 @@ Aplikasi ini dibangun menggunakan React Hooks, Context API untuk *state manageme
 
 Berikut adalah tampilan dari aplikasi ManajerBuku:
 
-### Halaman Utama (Home)
-*Menampilkan form tambah buku yang *sticky* di sisi kiri, serta daftar buku yang dapat dicari dan difilter di sisi kanan.*
+### Halaman Utama (Home)<br>
+<img width="1053" height="637" alt="image" src="https://github.com/user-attachments/assets/22cd647f-19af-4719-bd06-af3b86581933" />
 
-**[Screenshot Halaman Utama Anda di sini]**
-*(Ganti baris ini dengan screenshot UI Home Anda yang baru)*
 
-### Halaman Statistik
-*Menampilkan ringkasan koleksi, Bar Chart, Pie Chart (dengan persentase), dan daftar buku yang baru ditambahkan.*
+### Halaman Statistik<br>
+<img width="1040" height="541" alt="image" src="https://github.com/user-attachments/assets/36d74a7c-75a8-4a52-b2ac-98a287227975" />
 
-**[Screenshot Halaman Statistik Anda di sini]**
-*(Ganti baris ini dengan screenshot halaman `/stats` Anda)*
 
 ---
 
@@ -122,9 +118,6 @@ Persyaratan **minimal 5 test unit** telah terpenuhi. Proyek ini memiliki **6 tes
 
 Test unit ini mencakup:
 * **`BookForm.test.js`**: Menguji validasi error dan fungsionalitas *submit* form.
-* **`BookItem.test.js`**: Menguji bahwa data buku di-*render* dengan benar dan bahwa fungsi `deleteBook` dan `updateBook` dipanggil saat tombol ditekan.
+* **`BookItem.test.js`**: Menguji bahwa data buku di-*render* dengan benar dan bahwa fungsi `deleteBook` dan `updateBook` dipanggil saat tombol ditekan.<br>
 
-**Screenshot Hasil `npm test`:**
-
-**[Screenshot Terminal Hasil 'npm test' Anda di sini]**
-*(Ganti baris ini dengan screenshot terminal Anda yang menunjukkan 6 tes 'PASS')*
+<img width="422" height="187" alt="image" src="https://github.com/user-attachments/assets/bbdf2442-4b3b-45c0-92d6-62992bf57593" />
