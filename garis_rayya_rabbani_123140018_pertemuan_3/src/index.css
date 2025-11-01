@@ -1,34 +1,87 @@
 /* src/index.css */
-
-/* 1. Import Font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* 2. Reset Sederhana & Terapkan Font */
+:root {
+  /* Variabel Warna Premium (Light Mode) */
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.15 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0 0);
+  --primary: oklch(0.52 0.18 70); /* Amber/Gold */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.45 0.12 35); /* Brown/Rust */
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.92 0 0);
+  --muted-foreground: oklch(0.55 0 0);
+  --accent: oklch(0.55 0.15 25);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.577 0.245 27.325); /* Merah */
+  --destructive-foreground: oklch(0.98 0 0); /* Putih */
+  --border: oklch(0.92 0 0);
+  --input: oklch(0.96 0 0);
+  --ring: oklch(0.52 0.18 70);
+  
+  /* Warna Badge (Light) */
+  --blue-100: rgb(219 234 254);
+  --blue-800: rgb(30 64 175);
+  --green-100: rgb(220 252 231);
+  --green-800: rgb(22 101 52);
+  --yellow-100: rgb(254 249 195);
+  --yellow-800: rgb(133 77 14);
+
+  /* Warna Statistik */
+  --stat-blue: #3b82f6;
+  --stat-green: #22c55e;
+  --stat-yellow: #eab308;
+  --stat-purple: #a855f7;
+}
+
+/* Anda dapat menambahkan kelas .dark ke <body> untuk mengaktifkan ini */
+.dark {
+  --background: oklch(0.12 0 0);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.18 0 0);
+  --card-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.72 0.16 70);
+  --primary-foreground: oklch(0.12 0 0);
+  --secondary: oklch(0.65 0.12 35);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.35 0 0);
+  --muted-foreground: oklch(0.7 0 0);
+  --accent: oklch(0.75 0.14 25);
+  --accent-foreground: oklch(0.12 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.3 0 0);
+  --input: oklch(0.22 0 0);
+  --ring: oklch(0.72 0.16 70);
+
+  /* Warna Badge (Dark) */
+  --blue-100: rgb(30 58 138);
+  --blue-800: rgb(191 219 254);
+  --green-100: rgb(21 128 61);
+  --green-800: rgb(187 247 208);
+  --yellow-100: rgb(113 63 18);
+  --yellow-800: rgb(254 240 138);
+}
+
 * {
   box-sizing: border-box;
+  border-color: var(--border);
+  transition: all 0.2s;
 }
 
 body {
   margin: 0;
-  padding: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* 3. Terapkan Palet Warna Global */
-  background-color: #f8f9fa; /* Latar Belakang */
-  color: #2c3e50;           /* Teks Utama */
-}
-
-/* 4. Atur Container Utama di App.js */
-.App {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 main {
-  padding-top: 2rem;
+  display: block;
 }

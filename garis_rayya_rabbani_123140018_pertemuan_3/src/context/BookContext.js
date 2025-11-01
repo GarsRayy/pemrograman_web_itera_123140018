@@ -1,12 +1,9 @@
 // src/context/BookContext.js
+import React, { createContext, useContext } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 
-import React, { createContext, useContext, useState, useMemo } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage'; // <- (1) IMPORT HOOK KITA
-
-// 2. Buat Context
 const BookContext = createContext();
 
-// 3. Buat custom hook untuk memudahkan pemakaian context ini
 export function useBooks() {
   const context = useContext(BookContext);
   if (!context) {
@@ -15,91 +12,63 @@ export function useBooks() {
   return context;
 }
 
-// 4. Buat Provider Component (komponen yang akan "membungkus" aplikasi kita)
 export function BookProvider({ children }) {
   // =================================
   // A. STATE UTAMA
   // =================================
   
-  // Gunakan custom hook useLocalStorage kita!
-  // 'books' adalah key di localStorage, [] adalah nilai awal jika kosong
-  const [books, setBooks] = useLocalStorage('books', []);
+  // Perbarui useLocalStorage untuk juga memberi tahu kita saat selesai loading
+  const [books, setBooks, isLoaded] = useLocalStorage('books', []);
   
-  // State untuk fitur filter dan search (Sesuai Persyaratan Wajib)
-  const [filterStatus, setFilterStatus] = useState('all'); // 'all', 'milik', 'baca', 'beli'
-  const [searchTerm, setSearchTerm] = useState('');
-
   // =================================
   // B. FUNGSI LOGIKA (CRUD)
   // =================================
 
-  // Fitur Dasar: Menambah buku baru
   const addBook = (title, author, status) => {
     const newBook = {
-      id: Date.now(), // ID unik sederhana
+      id: Date.now(),
       title,
       author,
-      status, // 'milik', 'baca', atau 'beli'
+      status,
+      createdAt: Date.now(), // <-- Fitur Tambahan: Timestamp
+      updatedAt: Date.now(), // <-- Fitur Tambahan: Timestamp
     };
-    setBooks(prevBooks => [...prevBooks, newBook]);
+    setBooks(prevBooks => [newBook, ...prevBooks]);
   };
 
-  // Fitur Dasar: Menghapus buku
   const deleteBook = (id) => {
     setBooks(prevBooks => prevBooks.filter(book => book.id !== id));
   };
 
-  // Fitur Dasar: Mengedit buku (bisa untuk status, judul, atau penulis)
   const updateBook = (id, updates) => {
     setBooks(prevBooks =>
       prevBooks.map(book =>
-        book.id === id ? { ...book, ...updates } : book
+        book.id === id ? { ...book, ...updates, updatedAt: Date.now() } : book // <-- Fitur Tambahan: Timestamp
       )
     );
   };
 
   // =================================
-  // C. LOGIKA DERIVASI (FILTER & SEARCH)
+  // C. LOGIKA DERIVASI (DIHAPUS)
   // =================================
-  // Kita gunakan useMemo agar kalkulasi ini hanya berjalan saat ada perubahan,
-  // bukan di setiap render.
-  const filteredBooks = useMemo(() => {
-    return books
-      .filter(book => {
-        // Logika Filter Status
-        if (filterStatus === 'all') return true;
-        return book.status === filterStatus;
-      })
-      .filter(book => {
-        // Logika Search (cek di judul atau penulis)
-        const term = searchTerm.toLowerCase();
-        return (
-          book.title.toLowerCase().includes(term) ||
-          book.author.toLowerCase().includes(term)
-        );
-      });
-  }, [books, filterStatus, searchTerm]);
-
+  // const filteredBooks = useMemo(...) -> INI PINDAH KE useSearch.js
 
   // =================================
   // D. NILAI YANG AKAN DIBAGIKAN
   // =================================
   const value = {
-    books, // Daftar *semua* buku
+    books, // Daftar *semua* buku (belum difilter)
     addBook,
     deleteBook,
     updateBook,
+    isLoaded, // <-- Fitur Tambahan: Beri tahu komponen lain jika data sudah siap
     
-    // Untuk fitur filter
-    filterStatus,
-    setFilterStatus,
-    
-    // Untuk fitur search
-    searchTerm,
-    setSearchTerm,
-    
-    // Daftar buku yang sudah siap tampil (sudah difilter + search)
-    filteredBooks, 
+    // Hapus semua state filter dari sini
+    // filterStatus,
+    // setFilterStatus,
+    // searchTerm,
+    // setSearchTerm,
+    // filteredBooks, 
   };
 
   return (

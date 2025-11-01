@@ -1,45 +1,119 @@
 /* src/pages/Home/Home.css */
+.home-main {
+  min-height: 100vh;
+  /* background-image: linear-gradient(to bottom right, var(--background), var(--background), var(--muted)); */
+}
 
-.home-container {
+.home-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: rgba(from var(--background) r g b / 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(from var(--border) r g b / 0.4);
+}
+
+.home-navbar-content {
+  max-width: 80rem; /* 1280px */
+  margin: 0 auto;
+  padding: 1rem;
   display: flex;
-  flex-wrap: wrap; /* Agar responsif di layar kecil */
-  gap: 2rem;
-  max-width: 1400px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.form-section {
-  flex: 1; /* Lebar fleksibel */
-  min-width: 320px; /* Lebar minimum untuk form */
+.home-navbar-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* 12px */
 }
 
-.list-section {
-  flex: 2.5; /* Lebar fleksibel, 2.5x lebih besar dari form */
-  min-width: 320px; /* Lebar minimum untuk daftar */
+.home-navbar-icon-wrapper {
+  padding: 0.5rem; /* 8px */
+  border-radius: 0.5rem; /* 8px */
+  background-color: rgba(from var(--primary) r g b / 0.1);
 }
 
-.list-section h2 {
-  color: #2c3e50;
-  border-bottom: 2px solid #ecf0f1;
-  padding-bottom: 0.5rem;
-  margin-top: 0;
+.home-navbar-icon {
+  width: 1.5rem; /* 24px */
+  height: 1.5rem; /* 24px */
+  color: var(--primary);
 }
 
-/* Media Query untuk layar kecil (mis: HP) */
-@media (max-width: 768px) {
-  .home-container {
-    flex-direction: column; /* Ubah jadi 1 kolom */
-    margin-top: 1rem;
-    gap: 1rem;
-  }
+.home-navbar-h1 {
+  font-size: 1.5rem; /* 24px */
+  line-height: 2rem; /* 32px */
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0;
+}
 
-  .list-section {
-    /* Pastikan urutan di HP: Form dulu, baru List */
-    order: 2; 
-  }
+.home-navbar-p {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem; /* 16px */
+  color: var(--muted-foreground);
+  margin: 0;
+}
 
-  .form-section {
-    order: 1;
+/* Tombol Outline (untuk Link Statistik) */
+.button-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* 8px */
+  white-space: nowrap;
+  border-radius: 0.375rem; /* 6px */
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  height: 2.5rem; /* 40px */
+  padding: 0 1rem;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  background-color: transparent;
+  color: var(--foreground);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.button-outline:hover {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.home-main-container {
+  max-width: 80rem; /* 1280px */
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.stats-container-home {
+  margin-bottom: 3rem; /* 48px */
+}
+
+.home-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem; /* 32px */
+}
+
+.list-header {
+  margin-bottom: 1.5rem; /* 24px */
+}
+
+.section-title {
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
+  font-weight: 700;
+  margin-bottom: 1rem; /* 16px */
+  color: var(--foreground);
+}
+
+.sticky-sidebar {
+  position: sticky;
+  top: 6rem; /* 96px (navbar height + padding) */
+}
+
+@media (min-width: 1024px) {
+  .home-layout-grid {
+    grid-template-columns: 1fr 2fr;
   }
 }

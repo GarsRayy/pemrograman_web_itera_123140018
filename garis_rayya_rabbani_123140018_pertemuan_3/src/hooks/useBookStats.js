@@ -11,24 +11,24 @@ function useBookStats() {
   const stats = useMemo(() => {
     const total = books.length;
     
-    // Hitung jumlah buku berdasarkan status
-    const owned = books.filter(book => book.status === 'milik').length;
-    const reading = books.filter(book => book.status === 'baca').length;
-    const toBuy = books.filter(book => book.status === 'beli').length;
+    // ** Gunakan string status baru **
+    const owned = books.filter(book => book.status === 'owned').length;
+    const reading = books.filter(book => book.status === 'reading').length;
+    const wantToBuy = books.filter(book => book.status === 'want_to_buy').length; // Diperbarui
 
     // Persentase (jika total lebih dari 0)
     const ownedPercent = total > 0 ? (owned / total) * 100 : 0;
     const readingPercent = total > 0 ? (reading / total) * 100 : 0;
-    const toBuyPercent = total > 0 ? (toBuy / total) * 100 : 0;
+    const toBuyPercent = total > 0 ? (wantToBuy / total) * 100 : 0; // Diperbarui
 
     return {
       total,
       owned,
       reading,
-      toBuy,
+      wantToBuy, // Diperbarui
       ownedPercent,
       readingPercent,
-      toBuyPercent,
+      toBuyPercent, // Diperbarui
     };
   }, [books]); // Kalkulasi ini hanya akan berjalan ulang jika [books] berubah
 

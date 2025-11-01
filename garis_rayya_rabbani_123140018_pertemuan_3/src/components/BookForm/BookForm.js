@@ -1,86 +1,143 @@
 // src/components/BookForm/BookForm.js
-
-import React, { useState } from 'react';
-import { useBooks } from '../../context/BookContext'; // <- (1) Ambil fungsi dari Context
+import React, { useState, useEffect } from "react";
+import { BookMarked } from "lucide-react";
+import { useBooks } from "../../context/BookContext";
 import './BookForm.css';
 
-function BookForm() {
-  // (2) State lokal untuk mengelola input form
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [status, setStatus] = useState(''); // 'milik', 'baca', 'beli'
-  
-  // State untuk error handling (Syarat Wajib)
-  const [error, setError] = useState('');
+export default function BookForm({ initialData, onSubmit }) {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [status, setStatus] = useState("owned"); // Default ke 'owned'
+  const [errors, setErrors] = useState({});
+  const { addBook, updateBook } = useBooks();
 
-  // Ambil fungsi addBook dari context
-  const { addBook } = useBooks();
+  // Efek untuk mengisi form jika ini mode edit (initialData berubah)
+  useEffect(() => {
+    if (initialData) {
+      setTitle(initialData.title || "");
+      setAuthor(initialData.author || "");
+      setStatus(initialData.status || "owned");
+    } else {
+      // Jika bukan mode edit (form tambah buku), reset
+      setTitle("");
+      setAuthor("");
+      setStatus("owned");
+    }
+  }, [initialData]);
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!title.trim()) {
+      newErrors.title = "Judul buku harus diisi";
+    }
+    if (!author.trim()) {
+      newErrors.author = "Nama penulis harus diisi";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // (3) Error Handling Sederhana (Syarat Wajib)
-    if (!title.trim() || !author.trim() || !status) {
-      setError('Semua field (Judul, Penulis, dan Status) wajib diisi.');
+    if (!validateForm()) {
       return;
     }
 
-    // (4) Panggil fungsi dari context
-    addBook(title, author, status);
-
-    // (5) Reset form setelah submit
-    setTitle('');
-    setAuthor('');
-    setStatus('');
-    setError(''); // Hapus pesan error
+    if (initialData?.id) {
+      updateBook(initialData.id, {
+        title: title.trim(),
+        author: author.trim(),
+        status,
+      });
+    } else {
+      addBook(
+        title.trim(),
+        author.trim(),
+        status
+      );
+      // Reset form hanya jika ini bukan mode edit
+      setTitle("");
+      setAuthor("");
+      setStatus("owned");
+    }
+    
+    setErrors({});
+    if (onSubmit) {
+      onSubmit(); // Panggil callback (untuk menutup mode edit)
+    }
   };
 
   return (
-    <form className="book-form" onSubmit={handleSubmit}>
-      <h3>Tambah Buku Baru</h3>
-      
-      {/* Tampilkan pesan error jika ada */}
-      {error && <p className="form-error">{error}</p>}
-
-      <div className="form-group">
-        <label htmlFor="title">Judul Buku</label>
-        <input
-          type="text"
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Mis: Laskar Pelangi"
-        />
+    <div className="book-form-card">
+      <div className="book-form-header">
+        <BookMarked className="book-form-icon" />
+        <h3 className="book-form-title">
+          {initialData ? "Edit Buku" : "Tambah Buku Baru"}
+        </h3>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="author">Penulis</label>
-        <input
-          type="text"
-          id="author"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          placeholder="Mis: Andrea Hirata"
-        />
-      </div>
+      <form onSubmit={handleSubmit} className="book-form-body">
+        <div>
+          <label htmlFor="title" className="form-label">
+            Judul Buku
+          </label>
+          <input
+            id="title"
+            type="text"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              if (errors.title) {
+                setErrors({ ...errors, title: "" });
+              }
+            }}
+            placeholder="Masukkan judul buku..."
+            className={`input-field ${errors.title ? "input-error" : ""}`}
+          />
+          {errors.title && <p className="error-message">{errors.title}</p>}
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="status">Status</label>
-        <select
-          id="status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
-          <option value="">-- Pilih Status --</option>
-          <option value="milik">Dimiliki</option>
-          <option value="baca">Sedang Dibaca</option>
-          <option value="beli">Ingin Dibeli</option>
-        </select>
-      </div>
+        <div>
+          <label htmlFor="author" className="form-label">
+            Penulis
+          </label>
+          <input
+            id="author"
+            type="text"
+            value={author}
+            onChange={(e) => {
+              setAuthor(e.target.value);
+              if (errors.author) {
+                setErrors({ ...errors, author: "" });
+              }
+            }}
+            placeholder="Masukkan nama penulis..."
+            className={`input-field ${errors.author ? "input-error" : ""}`}
+          />
+          {errors.author && <p className="error-message">{errors.author}</p>}
+        </div>
 
-      <button type="submit" className="submit-btn">Tambah Buku</button>
-    </form>
+        <div>
+          <label htmlFor="status" className="form-label">
+            Status
+          </label>
+          <select
+            id="status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            className="select-field"
+          >
+            {/* Ubah value dan label */}
+            <option value="owned">Milik Saya</option>
+            <option value="reading">Sedang Dibaca</option>
+            <option value="want_to_buy">Ingin Dibeli</option>
+          </select>
+        </div>
+
+        <button type="submit" className="submit-button">
+          {initialData ? "Simpan Perubahan" : "Tambah Buku"}
+        </button>
+      </form>
+    </div>
   );
 }
-
-export default BookForm;

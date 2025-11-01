@@ -1,32 +1,29 @@
 // src/components/BookList/BookList.js
-
 import React from 'react';
-import { useBooks } from '../../context/BookContext'; // <- (1) Ambil data dari Context
-import BookItem from '../BookItem/BookItem'; // <- (2) Import komponen anak
+import BookItem from '../BookItem/BookItem';
+import EmptyState from "../EmptyState/EmptyState";
+import LoadingSkeleton from '../LoadingSkeleton/LoadingSkeleton'; // <-- 1. Import
 import './BookList.css';
 
-function BookList() {
-  // (3) Ambil daftar buku yang SUDAH DIFILTER & SEARCH
-  const { filteredBooks } = useBooks();
-
-  // (4) Cek jika tidak ada buku
-  if (filteredBooks.length === 0) {
-    return (
-      <div className="book-list-empty">
-        <p>Tidak ada buku yang ditemukan.</p>
-        <p>Silakan ubah filter pencarian Anda atau tambahkan buku baru!</p>
-      </div>
-    );
+// 2. Terima `isLoaded` dan `books` sebagai props
+export default function BookList({ books, isLoaded }) {
+  
+  // 3. Tampilkan skeleton jika belum loading
+  if (!isLoaded) {
+    return <LoadingSkeleton />;
   }
 
-  // (5) Jika ada buku, tampilkan daftarnya
+  // 4. Tampilkan EmptyState jika sudah loading tapi tidak ada buku
+  if (books.length === 0) {
+    return <EmptyState title="Belum ada buku" description="Mulai tambahkan buku Anda atau ubah filter!" />;
+  }
+
+  // 5. Tampilkan daftar buku
   return (
-    <div className="book-list-container">
-      {filteredBooks.map(book => (
+    <div className="book-list-new">
+      {books.map(book => (
         <BookItem key={book.id} book={book} />
       ))}
     </div>
   );
 }
-
-export default BookList;

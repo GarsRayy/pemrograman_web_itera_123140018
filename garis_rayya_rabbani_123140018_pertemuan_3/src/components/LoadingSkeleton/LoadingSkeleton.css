@@ -1,0 +1,22 @@
+/* src/components/LoadingSkeleton/LoadingSkeleton.css */
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* 12px */
+}
+
+.skeleton-item {
+  height: 5rem; /* 80px */
+  background-color: var(--muted);
+  border-radius: 0.75rem; /* 12px */
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}

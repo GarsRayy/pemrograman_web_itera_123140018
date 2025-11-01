@@ -1,61 +1,64 @@
 // src/components/BookItem/BookItem.js
-
-import React from 'react';
-import { useBooks } from '../../context/BookContext'; // <- (1) Ambil fungsi dari Context
+import React, { useState } from "react";
+import { useBooks } from "../../context/BookContext";
+import BookForm from "../BookForm/BookForm"; // Import form untuk edit
 import './BookItem.css';
 
-// (2) Terima 'book' sebagai prop dari BookList
-function BookItem({ book }) {
-  // (3) Ambil fungsi delete dan update dari context
-  const { deleteBook, updateBook } = useBooks();
+// Label dan kelas warna (hardcoded dari UI baru)
+const statusLabels = {
+  owned: "Milik Saya",
+  reading: "Sedang Dibaca",
+  want_to_buy: "Ingin Dibeli",
+};
 
-  // Handler untuk tombol delete
+const statusClasses = {
+  owned: "status-owned",
+  reading: "status-reading",
+  want_to_buy: "status-want-to-buy",
+};
+
+export default function BookItem({ book }) {
+  const { deleteBook } = useBooks();
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Tampilkan form edit jika isEditing true
+  if (isEditing) {
+    // Berikan initialData dan callback onSubmit untuk menutup form
+    // Kita bungkus dengan div agar tetap ada gap dari BookList.css
+    return (
+      <div className="book-item-edit-wrapper">
+        <BookForm initialData={book} onSubmit={() => setIsEditing(false)} />
+      </div>
+    );
+  }
+
+  // Handler Hapus
   const handleDelete = () => {
-    // Tampilkan konfirmasi sebelum menghapus
     if (window.confirm(`Anda yakin ingin menghapus buku "${book.title}"?`)) {
       deleteBook(book.id);
     }
   };
 
-  // Handler untuk mengubah status
-  const handleStatusChange = (e) => {
-    const newStatus = e.target.value;
-    updateBook(book.id, { status: newStatus });
-  };
-
-  // Helper untuk memberi kelas CSS berdasarkan status
-  const getStatusClass = (status) => {
-    if (status === 'baca') return 'status-reading';
-    if (status === 'beli') return 'status-tobuy';
-    return 'status-owned'; // default 'milik'
-  };
-
+  // Tampilan normal
   return (
-    <div className="book-item">
-      <div className="book-info">
-        <h4 className="book-title">{book.title}</h4>
-        <p className="book-author">oleh {book.author}</p>
-      </div>
-
-      <div className="book-actions">
-        {/* (4) Fitur Edit Status */}
-        <select
-          className={`status-select ${getStatusClass(book.status)}`}
-          value={book.status}
-          onChange={handleStatusChange}
-        >
-          <option value="milik">Dimiliki</option>
-          <option value="baca">Sedang Dibaca</option>
-          <option value="beli">Ingin Dibeli</option>
-        </select>
-        
-        {/* (5) Fitur Hapus Buku */}
-        <button className="delete-btn" onClick={handleDelete}>
-          Hapus
-        </button>
+    <div className="book-item-card">
+      <div className="book-item-flex">
+        <div className="book-item-content">
+          <h3 className="book-item-title">{book.title}</h3>
+          <p className="book-item-author">{book.author}</p>
+          <span className={`book-item-status-badge ${statusClasses[book.status] || ''}`}>
+            {statusLabels[book.status] || 'Tanpa Status'}
+          </span>
+        </div>
+        <div className="book-item-actions">
+          <button className="button-item-outline" onClick={() => setIsEditing(true)}>
+            Edit
+          </button>
+          <button className="button-item-destructive" onClick={handleDelete}>
+            Hapus
+          </button>
+        </div>
       </div>
     </div>
   );
 }
-
-export default BookItem;

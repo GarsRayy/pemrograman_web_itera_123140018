@@ -1,0 +1,17 @@
+/* src/components/EmptyState/EmptyState.css */
+.empty-state-container {
+  text-align: center;
+  padding: 3rem 0; /* 48px */
+}
+
+.empty-state-title {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.75rem; /* 28px */
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 0.5rem; /* 8px */
+}
+
+.empty-state-description {
+  color: var(--muted-foreground);
+}
